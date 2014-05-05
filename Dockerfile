@@ -2,14 +2,7 @@ FROM stackbrew/ubuntu:12.04
 MAINTAINER Lucas Carlson <lucas@rufy.com>
 
 RUN apt-get update -qq && apt-get install -y mysql-server-5.5
-
-ADD my.cnf /etc/mysql/conf.d/my.cnf
-RUN chmod 664 /etc/mysql/conf.d/my.cnf
-ADD run.sh /run.sh
-RUN chmod +x /run.sh
-
 VOLUME ["/var/lib/mysql"]
-EXPOSE 3306
 
 RUN mkdir -p /go
 ENV PATH /usr/local/go/bin:/go/bin:$PATH
@@ -30,7 +23,12 @@ RUN cd $GOPATH/src/github.com/gogits/gogs && git checkout dev && git pull origin
 RUN apt-get autoremove -y
 RUN apt-get clean all
 
+ADD my.cnf /etc/mysql/conf.d/my.cnf
+ADD run.sh /run.sh
 ADD app.ini $GOPATH/src/github.com/gogits/gogs/custom/conf/app.ini
+
+RUN chmod 664 /etc/mysql/conf.d/my.cnf
+RUN chmod +x /run.sh
 
 ENV MYSQL_DATABASE gogs
 ENV MYSQL_ROOT_PASSWORD kfd9kiewLdk
@@ -38,5 +36,7 @@ ENV INSTALLED false
 ENV USER root
 
 EXPOSE 3000
+
+VOLUME ["/gogs-repositories"]
 
 CMD ["/run.sh"]
