@@ -34,7 +34,7 @@ ADD app.ini $GOPATH/src/github.com/gogits/gogs/custom/conf/app.ini
 
 ENV MYSQL_DATABASE gogs
 ENV MYSQL_ROOT_PASSWORD kfd9kiewLdk
-ENV INSTALLED true 
+ENV INSTALLED false
 ENV USER root
 
 EXPOSE 3000
